@@ -67,3 +67,21 @@ def comment_new(request, post_pk):
     return render(request, template_name, {
         'form':form,
     })
+
+def comment_edit(request, post_pk, pk):
+    form_cls = CommentForm
+    template_name = 'myapp/comment_form.html'
+    success_url = '/'
+    comment = get_object_or_404(Comment, pk=pk)
+
+    if request.method == 'POST': 
+        form = form_cls(request.POST, request.FILES, instance=comment)
+        if form.is_valid():
+            comment = form.save()
+            return redirect(success_url)
+    else:
+        form = form_cls(instance=comment) 
+        
+    return render(request, template_name, {
+        'form':form,
+    })
