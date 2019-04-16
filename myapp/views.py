@@ -46,3 +46,24 @@ def post_edit(request, pk):
         'form':form,
     })
 
+
+def comment_new(request, post_pk):
+    form_cls = CommentForm
+    template_name = 'myapp/comment_form.html'
+    success_url = '/'
+    post = get_object_or_404(Post, pk=post_pk)
+
+    if request.method == 'POST': 
+        form = form_cls(request.POST, request.FILES)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.ip = request.META['REMOTE_ADDR']
+            comment.save()
+            return redirect(success_url)
+    else:
+        form = form_cls() 
+        
+    return render(request, template_name, {
+        'form':form,
+    })
