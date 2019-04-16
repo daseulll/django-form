@@ -4,6 +4,10 @@ from .forms import CommentForm, PostForm
 from .models import Comment, Post 
 
 
+post_list = ListView.as_view(model=Post)
+
+post_detail = DetailView.as_view(model=Post)
+
 def post_new(request):
     form_cls = PostForm
     template_name = 'myapp/post_form.html'
