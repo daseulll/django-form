@@ -1,41 +1,40 @@
+{% load bootstrap4 %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+    {% bootstrap_css %}
 </head>
+
 <body>
+
+<div class="container">
+    <div class="col-sm-12">
+        <h1>Post Form</h1>
+
+        <form action="" method="POST" novalidate autocomplete="off">
+            {% csrf_token %}
+        
+            {% bootstrap_form form %}
+        
+            {% buttons %}
+            <button type="submit" class="btn btn-primary">
+              Submit
+            </button>
+            {% endbuttons %}
+        </form>
+        
+        {% bootstrap_javascript jquery='full' %}
+        
+        <script type="text/javascript">
+        var dom = document.getElementById('{{ form.user.agent.id_for_label }}').value
+        // 백엔드단에서 userAgent 아이디에 접근
+        dom.value = navigator.userAgent;
+        </script>
+    </div>
+</div>
     
-    <h1>Post Form</h1>
-    
-<form action="" method="POST" novalidate autocomplete="off">
-    {% csrf_token %}
-
-    {% for field in form.hidden_fields %}
-        {{ field }}
-        {{ field.errors }}
-    {% endfor%}
-
-    <table class="table table bordered table-hover">
-        {% for field in form.visible_fields %}
-            <tr>
-                <td>{{ field.label_tag }}</td>
-                <td>
-                    {{ field }}
-                    <p>{{ field.help_text }}</p>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
-    <input type="submit" value="저장" class="btn btn-primary" />
-    <button>저장</button>
-</form>
-
-<script type="text/javascript">
-var dom = document.getElementById('{{ form.user.agent.id_for_label }}').value
-// 백엔드단에서 userAgent 아이디에 접근
-dom.value = navigator.userAgent;
-</script>
-
 </body>
 </html>
