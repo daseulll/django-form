@@ -1,10 +1,16 @@
 
 <h1>Post Form</h1>
 
-<form action="" method="POST">
+<form action="" method="POST" novalidate autocomplete="off">
     {% csrf_token %}
     <table>
         {{ form.as_table }}
     </table>
     <input type="submit" value="저장" />
+    <button>저장</button>
 </form>
+
+<script type="text/javascript">
+var dom = document.getElementById('{{ form.user.agent.id_for_label }}').value
+dom.value = navigator.userAgent;
+</script>
