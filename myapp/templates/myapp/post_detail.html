@@ -1,3 +1,6 @@
+{% extends "myapp/layout.html" %}
+{% block content %}
+
 <h1>{{ post.title }}</h1>
 <p>{{ post.content|safe }}</p>
 
@@ -14,3 +17,5 @@
 
 <a href="{% url 'comment_new' post.pk %}">댓글 쓰기</a>
 <a href="{% url 'post_list' %}">목록으로</a>
+
+{% endblock %}

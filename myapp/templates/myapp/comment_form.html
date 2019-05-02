@@ -1,9 +1,30 @@
-<h1>Comment Form</h1>
+{% extends "myapp/layout.html" %}
+{% load bootstrap4 %}
 
-<form action="" method="POST">
-    {% csrf_token %}
-    <table>
-        {{ form.as_table }}
-    </table>
-    <input type="submit" value="저장" />
-</form>
+{% block content %}
+<div class="container">
+    <div class="col-sm-12">
+        <h1>Comment Form</h1>
+
+        <form action="" method="POST">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+            <button type="submit" class="btn btn-primary">
+            Submit
+            </button>
+            {% endbuttons %}
+        </form>
+
+        {% endblock %}
+
+        {% block extra_body %}
+        <script type="text/javascript">
+            var dom = document.getElementById('{{ form.user.agent.id_for_label }}').value
+            // 백엔드단에서 userAgent 아이디에 접근
+            dom.value = navigator.userAgent;
+        </script>
+        {% endblock %}
+
+    </div>
+</div>
