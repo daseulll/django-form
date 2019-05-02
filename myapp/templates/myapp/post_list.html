@@ -1,3 +1,12 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message.tags }} : {{ message.message }}<br/>
+        </div>
+    {% endfor %}
+{% endif %}
+
 <table>
     {% for post in post_list %}
     <tr>

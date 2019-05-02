@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.views.generic import ListView, DetailView
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import CommentForm, PostForm
@@ -18,6 +19,7 @@ def post_new(request):
         if form.is_valid():
             # post = Post.objects.create(**form.cleaned_data)
             post = form.save()
+            messages.success(request, '새 글을 저장했습니다.')
             return redirect(success_url)
     else:
         form = form_cls() 
@@ -38,6 +40,7 @@ def post_edit(request, pk):
         if form.is_valid():
             # post = Post.objects.create(**form.cleaned_data)
             post = form.save()
+            messages.success(request, '수정이 완료되었습니다')
             return redirect(success_url)
     else:
         form = form_cls(instance=post) 
@@ -60,6 +63,7 @@ def comment_new(request, post_pk):
             comment.post = post
             comment.ip = request.META['REMOTE_ADDR']
             comment.save()
+            messages.success(request, '댓글이 등록되었습니다')
             return redirect(success_url)
     else:
         form = form_cls() 
@@ -78,6 +82,7 @@ def comment_edit(request, post_pk, pk):
         form = form_cls(request.POST, request.FILES, instance=comment)
         if form.is_valid():
             comment = form.save()
+            messages.success(request, '댓글이 수정되었습니다')
             return redirect(success_url)
     else:
         form = form_cls(instance=comment) 

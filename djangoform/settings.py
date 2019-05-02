@@ -128,3 +128,12 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+
+from django.contrib.messages import constants
+MESSAGE_TAGS = {
+    constants.DEBUG: 'secondary',
+    constants.ERROR: 'danger',
+}
+
+MESSAGE_LEVEL = constants.DEBUG
