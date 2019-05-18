@@ -1,6 +1,7 @@
 from django.contrib import messages
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
 from .forms import CommentForm, PostForm
 from .models import Comment, Post 
 
@@ -74,6 +75,18 @@ class PostUpdateView(UpdateView):
         return res
         
 post_edit = PostUpdateView.as_view()
+
+def post_delete(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        post.delete()
+        return redirect('post_list')
+    return render(request, 'myapp/post_confirm_delete.html', {
+        'post' : post,
+    })
+
+# post_delete = DeleteView.as_view(model=Post, success_url=reverse_lazy('post_list') )
+
 
 def comment_new(request, post_pk):
     form_cls = CommentForm
