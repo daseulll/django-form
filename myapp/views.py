@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import CommentForm, PostForm
 from .models import Comment, Post 
@@ -9,46 +9,71 @@ post_list = ListView.as_view(model=Post)
 
 post_detail = DetailView.as_view(model=Post)
 
-def post_new(request):
-    form_cls = PostForm
-    template_name = 'myapp/post_form.html'
-    success_url = '/'
+# def post_new(request):
+#     form_cls = PostForm
+#     template_name = 'myapp/post_form.html'
+#     success_url = '/'
 
-    if request.method == 'POST': 
-        form = form_cls(request.POST, request.FILES)
-        if form.is_valid():
-            # post = Post.objects.create(**form.cleaned_data)
-            post = form.save()
-            messages.success(request, '새 글을 저장했습니다.')
-            return redirect(success_url)
-    else:
-        form = form_cls() 
+#     if request.method == 'POST': 
+#         form = form_cls(request.POST, request.FILES)
+#         if form.is_valid():
+#             # post = Post.objects.create(**form.cleaned_data)
+#             post = form.save()
+#             messages.success(request, '새 글을 저장했습니다.')
+#             return redirect(success_url)
+#     else:
+#         form = form_cls() 
         
-    return render(request, template_name, {
-        'form':form,
-    })
+#     return render(request, template_name, {
+#         'form': form,
+#     })
 
-def post_edit(request, pk):
-    form_cls = PostForm
-    template_name = 'myapp/post_form.html'
-    success_url = '/'
+class PostCreateView(CreateView):
+    model = Post
+    # form_class = PostForm
+    # template_name = 'myapp/post_form.html'
+    # success_url = "https://otherservice.com/hello/{id}/"
+    fields = '__all__'
+    
+    def form_valid(self, form):
+        res = super().form_valid(form)
+        messages.success(self.request, '새 글을 저장했습니다.')
+        return res
 
-    post = get_object_or_404(Post, pk=pk)
+post_new = PostCreateView.as_view()
 
-    if request.method == 'POST': 
-        form = form_cls(request.POST, request.FILES, instance=post)
-        if form.is_valid():
-            # post = Post.objects.create(**form.cleaned_data)
-            post = form.save()
-            messages.success(request, '수정이 완료되었습니다')
-            return redirect(success_url)
-    else:
-        form = form_cls(instance=post) 
+
+# def post_edit(request, pk):
+#     form_cls = PostForm
+#     template_name = 'myapp/post_form.html'
+#     success_url = '/'
+
+#     post = get_object_or_404(Post, pk=pk)
+
+#     if request.method == 'POST': 
+#         form = form_cls(request.POST, request.FILES, instance=post)
+#         if form.is_valid():
+#             # post = Post.objects.create(**form.cleaned_data)
+#             post = form.save()
+#             messages.success(request, '수정이 완료되었습니다')
+#             return redirect(success_url)
+#     else:
+#         form = form_cls(instance=post) 
         
-    return render(request, template_name, {
-        'form':form,
-    })
+#     return render(request, template_name, {
+#         'form':form,
+#     })
 
+class PostUpdateView(UpdateView):
+    model = Post
+    form_class = PostForm
+
+    def form_valid(self, form):
+        res = super().form_valid(form)
+        messages.success(self.request, '새 글을 저장했습니다.')
+        return res
+        
+post_edit = PostUpdateView.as_view()
 
 def comment_new(request, post_pk):
     form_cls = CommentForm
