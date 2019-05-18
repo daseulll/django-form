@@ -24,8 +24,9 @@
 
 {% block extra_body %}
 <script type="text/javascript">
-    var dom = document.getElementById('{{ form.user.agent.id_for_label }}').value
+    var dom = document.getElementById('{{ form.user_agent.id_for_label }}');
     // 백엔드단에서 userAgent 아이디에 접근
+    // form.field_name 로 객체에 접근하여 위젯 출력,  id_for_label로 id값에 접근
     dom.value = navigator.userAgent;
 </script>
 {% endblock %}
